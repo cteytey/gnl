@@ -3,38 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/10/25 14:26:21 by marvin           ###   ########.fr       */
+/*   Updated: 2025/10/27 17:13:05 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_get_line(char *tmp)
+static char	*ft_print_line(int fd)
 {
-	
+	char	*buffer;
+	static char	*s;
+	int		size;
+	int		i;
+
+	i = 0;
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	size = read(fd, buffer, BUFFER_SIZE);
+	if (size <= 0)
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		s = ft_strdup(buffer);
+	free(buffer);
+	return (s);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*buffer;
 	char	*s;
-	static char	*tmp;
-	int		size;
+	int		i;
 
-	buffer = malloc(BUFFER_SIZE + 1);
-	size = read(fd, buffer, BUFFER_SIZE);
-	if (size <= 0)
-		return (NULL);
-	while (*buffer != '\n')
-	{
-		s += malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		if (!s)
-			return (NULL);
-		*(s++) = *(buffer++);
-	}
+	i = 0;
+	while (s[i] != '\n')
+		s = ft_print_line(fd);
 	return (s);
 }
 
