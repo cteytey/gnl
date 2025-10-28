@@ -6,28 +6,32 @@
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/10/27 17:13:05 by judehon          ###   ########.fr       */
+/*   Updated: 2025/10/28 16:40:31 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_print_line(int fd)
+static char	*ft_read_join(int fd)
 {
-	char	*buffer;
+	char		*buffer;
 	static char	*s;
-	int		size;
-	int		i;
+	int			size;
+	char		*tmp;
 
-	i = 0;
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	size = read(fd, buffer, BUFFER_SIZE);
-	if (size <= 0)
-		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
-		s = ft_strdup(buffer);
+	size = 1;
+	while (!ft_strchr(s, '\n') && size > 0)
+	{
+		size = read(fd, buffer, BUFFER_SIZE);
+		buffer[size] = '\0';
+		if (!s)
+			s = ft_strdup(buffer);
+		else
+			s = ft_strjoin(s, buffer);
+	}
 	free(buffer);
 	return (s);
 }
