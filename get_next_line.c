@@ -6,7 +6,7 @@
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/10/30 18:00:26 by judehon          ###   ########.fr       */
+/*   Updated: 2025/10/30 18:15:40 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ static char	*ft_readsave(int fd, char *s)
 	{
 		size = read(fd, buffer, BUFFER_SIZE);
 		if (size <= 0)
+		{
+			free(buffer);
+			free(s);
 			return (NULL);
+		}
 		buffer[size] = '\0';
 		tmp = ft_strjoin(s, buffer);
 		free(s);
@@ -103,11 +107,16 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_get_line(rest);
 	if (!line)
+	{
+		free(rest);
+		rest = NULL;
 		return (NULL);
+	}
 	rest = ft_save_rest(rest);
 	return (line);
 }
 
+/*
 #include <stdio.h>
 int	main()
 {
@@ -119,4 +128,4 @@ int	main()
 		free (line);
 	}
 	close (fd);
-}
+}*/
