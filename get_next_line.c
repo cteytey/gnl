@@ -6,71 +6,117 @@
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/10/29 17:27:02 by judehon          ###   ########.fr       */
+/*   Updated: 2025/10/30 15:40:27 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_remove_end(char *str)
+static char	*ft_readsave(int fd, char *s)
 {
-	int	i;
-	int	j;
-	int	tmp;
-	char	*new;
-
-	i = ft_strlen(str);
-	while (str[i] != '\n')
-		i--;
-	tmp = i;
-	new = malloc(sizeof(char) * tmp + 1);
-	if (!new)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (j < tmp)
-		new[j++] = str[i++];
-	new[j] = '\0';
-	return (new);
-}
-
-static char	*ft_read_join(int fd)
-{
-	char		*buffer;
-	static char	*s;
-	int			size;
-	char		*tmp;
+	char	*buffer;
+	char	*tmp;
+	int		size;
 
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
+	if (!s)
+	{
+		s = malloc(1);
+		s[0] = '\0';
+	}
 	size = 1;
-	while (!ft_strchr(buffer, '\n') && size > 0)
+	while (!ft_strchr(s, '\n') && size > 0)
 	{
 		size = read(fd, buffer, BUFFER_SIZE);
+		if (size <= 0)
+			return (NULL);
 		buffer[size] = '\0';
-		if (!s)
-			s = ft_strdup(buffer);
-		else
-		{
-			tmp = ft_strjoin(s, buffer);
-			free(s);
-			s = tmp;
-		}
+		tmp = ft_strjoin(s, buffer);
+		free(s);
+		s = tmp;
 	}
-	free(buffer);
-	s = ft_remove_end(s);
+	free (buffer);
 	return (s);
+}
+
+static char	*ft_get_line(char *s)
+{
+	char	*line;
+	int		i;
+
+	i = 0;
+	while (s[i] && s[i] != '\n')
+		i++;
+	line = malloc(sizeof(char) * (i + (s[i] == '\n') + 1));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (s[i] && s[i] != '\n')
+	{
+		line[i] = s[i];
+		i++;
+	}
+	if (s[i] == '\n')
+	{
+		line[i] = '\n';
+		i++;
+	}
+	line[i] = '\0';
+	return (line);	
+}
+
+static char	*ft_save_rest(char *s)
+{
+	char	*rest;
+	int		i;
+	int		j;
+
+	i = 0;
+	while(s[i] && s[i] != '\n')
+		i++;
+	if (!s[i])
+	{
+		free (s);
+		return (NULL);
+	}
+	rest = malloc(sizeof(char) * (ft_strlen(s) - i + 1));
+	if (!rest)
+		return (NULL);
+	i++;
+	j = 0;
+	while (s[i])
+		rest[j++] = s[i++];
+	rest[j] = '\0';
+	free (s);
+	return (rest);
 }
 
 char	*get_next_line(int fd)
 {
+	static char *rest;
+	char		*line;
 
+	rest = ft_readsave(fd, rest);
+	if (!rest)
+		return (NULL);
+	line = ft_get_line(rest);
+	if (!line)
+		return (NULL);
+	rest = ft_save_rest(rest);
+	return (line);
 }
 
 #include <stdio.h>
 int	main()
 {
-	printf("%s\n", ft_read_join(open("test.txt", O_RDWR)));
-	printf("%s\n", ft_read_join(open("test.txt", O_RDWR)));
+	int	fd = open("get_next_line.c", O_RDONLY);
+	char	*line;
+	while ((line = get_next_line(fd)))
+	{
+		printf("%s", line);
+		free (line);
+	}
+	close (fd);
 }

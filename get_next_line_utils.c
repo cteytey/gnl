@@ -22,28 +22,26 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t	len;
-	size_t	i;
-	size_t	j;
-	char	*final_str;
+	char	*res;
+	int		i;
+	int		j;
 
-	if (!s1 || !s2)
-		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	final_str = malloc(sizeof(char) * (len + 1));
-	if (!final_str)
-		return (NULL);
 	i = 0;
 	j = 0;
-	while (s1[j])
-		final_str[i++] = s1[j++];
-	j = 0;
+	res = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!res)
+		return (NULL);
+	while (s1[i])
+	{
+		res[i] = s1[i];
+		i++;
+	}
 	while (s2[j])
-		final_str[i++] = s2[j++];
-	final_str[i] = '\0';
-	return (final_str);
+		res[i++] = s2[j++];
+	res[i] = '\0';
+	return (res);
 }
 
 char	*ft_strchr(const char *s, int c)
