@@ -6,7 +6,7 @@
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/10/31 14:41:36 by judehon          ###   ########.fr       */
+/*   Updated: 2025/10/31 17:39:32 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ static char	*ft_readsave(int fd, char *s)
 	if (!s)
 	{
 		s = malloc(1);
+		if (!s)
+		{
+			free(buffer);
+			return (NULL);
+		}
 		s[0] = '\0';
 	}
 	size = 1;
@@ -70,7 +75,7 @@ static char	*ft_get_line(char *s)
 		i++;
 	}
 	line[i] = '\0';
-	return (line);	
+	return (line);
 }
 
 static char	*ft_save_rest(char *s)
@@ -80,7 +85,7 @@ static char	*ft_save_rest(char *s)
 	int		j;
 
 	i = 0;
-	while(s[i] && s[i] != '\n')
+	while (s[i] && s[i] != '\n')
 		i++;
 	if (!s[i])
 	{
@@ -101,7 +106,7 @@ static char	*ft_save_rest(char *s)
 
 char	*get_next_line(int fd)
 {
-	static char *rest;
+	static char	*rest;
 	char		*line;
 
 	rest = ft_readsave(fd, rest);
