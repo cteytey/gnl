@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/10/30 21:03:04 by marvin           ###   ########.fr       */
+/*   Updated: 2025/10/31 14:41:36 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static char	*ft_readsave(int fd, char *s)
 		if (size <= 0)
 		{
 			free(buffer);
+			if (size == 0 && s[0] != '\0')
+				return (s);
 			free(s);
 			return (NULL);
 		}
@@ -116,7 +118,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-
+/*
 #include <stdio.h>
 int	main()
 {
@@ -128,4 +130,4 @@ int	main()
 		free (line);
 	}
 	close (fd);
-}
+}*/
