@@ -6,7 +6,7 @@
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/11/03 17:13:58 by judehon          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:07:55 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static int	ft_readloop(int fd, char **s, char *buffer)
 			return (size);
 		buffer[size] = '\0';
 		tmp = ft_strjoin(*s, buffer);
+		if (!tmp)
+			return (0);
 		free(*s);
 		*s = tmp;
 	}
@@ -33,26 +35,19 @@ static int	ft_readloop(int fd, char **s, char *buffer)
 
 static char	*ft_readsave(int fd, char *s)
 {
-	char	*buffer;
+	char	buffer[BUFFER_SIZE + 1];
 	int		size;
 
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);
 	if (!s)
 	{
 		s = ft_strdup("");
 		if (!s)
-		{
-			free (buffer);
 			return (NULL);
-		}
 	}
 	size = ft_readloop(fd, &s, buffer);
-	free(buffer);
 	if (size <= 0)
 	{
-		if (size == 0 && s && s[0] != '\0')
+		if (size == 0 && s[0] != '\0')
 			return (s);
 		free(s);
 		return (NULL);
@@ -78,10 +73,7 @@ static char	*ft_get_line(char *s)
 		i++;
 	}
 	if (s[i] == '\n')
-	{
-		line[i] = '\n';
-		i++;
-	}
+		line[i++] = '\n';
 	line[i] = '\0';
 	return (line);
 }
@@ -100,7 +92,7 @@ static char	*ft_save_rest(char *s)
 		free (s);
 		return (NULL);
 	}
-	rest = malloc(sizeof(char) * (ft_strlen(s) - i + 1));
+	rest = malloc(sizeof(char) * (ft_strlen(s) - i));
 	if (!rest)
 		return (NULL);
 	i++;
@@ -131,11 +123,10 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/*
 #include <stdio.h>
 int	main()
 {
-	int	fd = open("get_next_line.c", O_RDONLY);
+	int	fd = open("test", O_RDONLY);
 	char	*line;
 	while ((line = get_next_line(fd)))
 	{
@@ -143,4 +134,4 @@ int	main()
 		free (line);
 	}
 	close (fd);
-}*/
+}
