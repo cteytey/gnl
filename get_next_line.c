@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/10/31 21:19:40 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/03 15:02:04 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ static char	*ft_readsave(int fd, char *s)
 		return (NULL);
 	if (!s)
 	{
-		s = malloc(1);
+		s = ft_strdup("");
 		if (!s)
-			return (free (buffer), NULL);
-		s[0] = '\0';
+		{
+			free (buffer);
+			return (NULL);
+		}
 	}
 	size = ft_readloop(fd, &s, buffer);
 	free(buffer);
