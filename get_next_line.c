@@ -6,7 +6,7 @@
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/11/03 15:02:04 by judehon          ###   ########.fr       */
+/*   Updated: 2025/11/03 17:13:58 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*ft_readsave(int fd, char *s)
 	free(buffer);
 	if (size <= 0)
 	{
-		if (size == 0 && s[0] != '\0')
+		if (size == 0 && s && s[0] != '\0')
 			return (s);
 		free(s);
 		return (NULL);
