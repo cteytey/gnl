@@ -6,7 +6,7 @@
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/11/03 19:07:55 by judehon          ###   ########.fr       */
+/*   Updated: 2025/11/03 19:11:09 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
+/*
 #include <stdio.h>
 int	main()
 {
@@ -134,4 +135,4 @@ int	main()
 		free (line);
 	}
 	close (fd);
-}
+}*/
