@@ -6,7 +6,7 @@
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/11/03 19:11:09 by judehon          ###   ########.fr       */
+/*   Updated: 2025/11/04 10:56:16 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,23 @@ static int	ft_readloop(int fd, char **s, char *buffer)
 
 static char	*ft_readsave(int fd, char *s)
 {
-	char	buffer[BUFFER_SIZE + 1];
+	char	*buffer;
 	int		size;
 
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
 	if (!s)
 	{
 		s = ft_strdup("");
 		if (!s)
+		{
+			free(buffer);
 			return (NULL);
+		}
 	}
 	size = ft_readloop(fd, &s, buffer);
+	free (buffer);
 	if (size <= 0)
 	{
 		if (size == 0 && s[0] != '\0')
@@ -123,16 +130,15 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/*
-#include <stdio.h>
-int	main()
-{
-	int	fd = open("test", O_RDONLY);
-	char	*line;
-	while ((line = get_next_line(fd)))
-	{
-		printf("%s", line);
-		free (line);
-	}
-	close (fd);
-}*/
+// #include <stdio.h>
+// int	main()
+// {
+// 	int	fd = open("test", O_RDONLY);
+// 	char	*line;
+// 	while ((line = get_next_line(fd)))
+// 	{
+// 		printf("%s", line);
+// 		free (line);
+// 	}
+// 	close (fd);
+// }
