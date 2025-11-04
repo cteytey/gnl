@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: judehon <judehon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 14:34:51 by judehon           #+#    #+#             */
-/*   Updated: 2025/11/04 11:46:14 by judehon          ###   ########.fr       */
+/*   Updated: 2025/11/04 12:09:58 by judehon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static int	ft_readloop(int fd, char **s, char *buffer)
 {
@@ -113,20 +113,20 @@ static char	*ft_save_rest(char *s)
 
 char	*get_next_line(int fd)
 {
-	static char	*rest;
+	static char	*rest[1024];
 	char		*line;
 
-	rest = ft_readsave(fd, rest);
-	if (!rest)
+	rest[fd] = ft_readsave(fd, rest[fd]);
+	if (!rest[fd])
 		return (NULL);
-	line = ft_get_line(rest);
+	line = ft_get_line(rest[fd]);
 	if (!line)
 	{
-		free(rest);
-		rest = NULL;
+		free(rest[fd]);
+		rest[fd] = NULL;
 		return (NULL);
 	}
-	rest = ft_save_rest(rest);
+	rest[fd] = ft_save_rest(rest[fd]);
 	return (line);
 }
 
